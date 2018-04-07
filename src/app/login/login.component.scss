@@ -1,0 +1,29 @@
+:host {
+  height: 100%;
+}
+  .mat-card {
+    max-width: 50%;
+    min-height: calc(100% + 60px);
+    margin-top: 16px;
+    margin-bottom: 16px;
+    
+    .mat-card-image, img {
+      border-radius: 50%;
+      max-height: 50%;
+      max-width: 50%;
+      margin: 0 25% 16px 25%;
+    }
+    ::ng-deep .mat-card-title {
+      font-size: .95em;
+
+    }
+    .button-wrapper-hr {
+      display: inline-block;
+      width: 100%;
+      .login-button {
+        margin: 16px auto;
+        min-width: 36%;
+        min-height: 50px;
+      }
+    }
+  }

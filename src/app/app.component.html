@@ -1,0 +1,33 @@
+<div id="appRootWrapper">
+  <app-navbar #navbar (toggleLeft)="onToggle(iconNavDrawer)" (toggleRight)="onToggle(featureDrawer)" [showSideNav]="iconNavDrawer.opened"></app-navbar>
+
+  <mat-sidenav-container>
+    <mat-sidenav
+    [mode]="'push'"
+    #iconNavDrawer
+    [position]="'start'"
+    id="fixedIconNav"
+    fixedTopGap="60"
+    fixedInViewport="true"
+    color="accent" closed>
+    <mat-list >
+      <mat-list-item *ngFor="let link of links" title="{{ link.name }}">
+        <a [routerLink]="link.routerLink">
+          <mat-icon class="fas fa"
+          mat-list-icon
+          [ngClass]="link.icon"></mat-icon>
+          <b mat-line>
+            {{ link.name }}
+          </b>
+          <mat-divider></mat-divider>
+        </a>
+
+
+      </mat-list-item>
+    </mat-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

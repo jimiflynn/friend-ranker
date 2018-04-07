@@ -1,0 +1,51 @@
+<mat-toolbar class="mat-elevation-z6" color="primary" fxLayout="row">
+	<div class="nav-toggle" *ngIf="auth.user$ | async">
+		<button mat-icon-button (click)="toggleNav()">
+				<mat-icon><i class="fa" [ngClass]="(navIsOpen | async) ? 'fa-remove' : 'fa-bars'"></i></mat-icon>
+
+		</button>
+	</div>
+
+	<div class="nav-logo">
+		<a routerLink="/home"><img class="nav-logo-small" src="../../assets/images/logo_small.png" alt="friendRanker logo"></a>
+	</div>
+
+	<div *ngIf="auth.user$ | async as user; then authenticated else guest;">
+		<!-- template will replace this div -->
+	</div>
+	<ng-template #guest>
+		<div class="auth-button" matTooltip="Login" matTooltipPosition="below">
+			<button mat-mini-fab color="accent" [mat-menu-trigger-for]="guestMenu">
+				<mat-icon>account_box</mat-icon>
+			</button>
+			<mat-menu #guestMenu="matMenu" guestMenu.yPosition="below" guestMenu.overlapTrigger="false" [style.width.px]="200">
+				<button mat-menu-item (click)="googleLogin()"><i class="fab fa-google"></i> Connect Google</button>
+				<button mat-menu-item (click)="facebookLogin()"><i class="fab fa-facebook"></i> Connect Facebook</button>
+			</mat-menu>
+		</div>
+	</ng-template>
+	<ng-template  #authenticated>
+		<div class="auth-button" *ngIf="auth.user$ | async as user">
+			<img mat-card-avatar [src]="user.photoURL"
+
+			matTooltip="User options"
+			matTooltipPosition="left"
+			class="nav-authenticated-user-button"
+			[mat-menu-trigger-for]="authenticatedMenu" />
+			<mat-menu #authenticatedMenu="matMenu" yPosition="below" overlapTrigger="false">
+				<button mat-menu-item (click)="router.navigateByUrl('/user')">Profile</button>
+				<button mat-menu-item (click)="router.navigateByUrl('/friends')">Friends</button>
+				<button mat-menu-item (click)="router.navigateByUrl('/posts')">Posts</button>
+				<button mat-menu-item (click)="[logout()]">Sign Out</button>
+			</mat-menu>
+		</div>
+		<!-- <div class="right-toggle" (click)="toggleFeatureDrawer()">
+			<i class="fa fa-ellipsis-v"></i>
+		</div> -->
+
+	</ng-template>
+
+
+
+
+</mat-toolbar>

@@ -1,0 +1,24 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+
+    <mat-card-title>
+      Account Setup and Login
+    </mat-card-title>
+
+  <mat-card>
+    <img mat-card-image [src]="'../../assets/images/avatar.png'" alt="">
+    <mat-card-title fxLayoutAlign="center center">
+      Connect to your account using
+    </mat-card-title>
+    <mat-divider>OR</mat-divider>
+    <div class="button-wrapper-hr" fxLayoutAlign="center center">
+
+      <button mat-raised-button [style.backgroundColor]="'#DD4B39'" class="login-button" (click)="googleLogin()"  matTooltip="Sign-in/Sign-up with Google" matTooltipPosition="above">
+        <i class="fab fa-google fa-2x"></i>
+      </button>
+      <button fxLayoutAlign="center center" mat-raised-button [style.backgroundColor]="'#3b5998'" class="login-button" (click)="facebookLogin()"
+      matTooltip="Sign-in/Sign-up with Facebook" matTooltipPosition="above">
+      <i class="fab fa-facebook fa-2x"></i>
+    </button>
+  </div>
+</mat-card>
+</div>
