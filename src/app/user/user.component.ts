@@ -57,7 +57,7 @@ export class UserComponent implements OnInit {
   }
 
   getUsernameErrorMessage(): string {
-    return `Try Again!!`;
+    return `Either username is taken or not proper format!!`;
   }
 
   submitNewUserProfileData(userId: string, event: Event, data: UserProfile, options?: any) {
