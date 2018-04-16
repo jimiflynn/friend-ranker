@@ -13,7 +13,7 @@ import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs
 
 import { AuthService, User } from '../core/auth/auth.service';
 import { UserService } from './shared/user.service';
-import { UserProfile } from './shared/user';
+import { UserProfile, EditedUser } from './shared/user';
 
 @Component({
   selector: 'app-user',
@@ -27,7 +27,6 @@ export class UserComponent implements OnInit {
   usernameFilter$: BehaviorSubject<string | null>;
   userEmailFilter$: BehaviorSubject<string | null>;
   userPhotoFilter$: BehaviorSubject<string | null>;
-  editedUserParts: any = {};
 
   constructor(
     public userData: UserService,
@@ -40,32 +39,18 @@ export class UserComponent implements OnInit {
     this.showEditProfileContainer = !this.showEditProfileContainer;
   }
 
-  private editUserProfileData(userId: string, data: UserProfile) {
+  private editUserProfileData(userId: string, data: EditedUser) {
     return this.userData.updateUserData(userId, data);
   }
 
-  private validateUsername(input: string | any | null, event?: any, userId?: string) {
-    this.editedUserParts.username = input;
-  }
-
-  private validateUserEmail(input: string | any | null, event?: any, userId?: string) {
-    this.editedUserParts.email = input;
-  }
-
-  private validateUserPhoto(input: string | any | null, event?: any, userId?: string) {
-    this.editedUserParts.photo = input;
-  }
-
-  getUsernameErrorMessage(): string {
-    return `Either username is taken or not proper format!!`;
-  }
-
-  submitNewUserProfileData(userId: string, event: Event, data: UserProfile, options?: any) {
+  submitNewUserProfileData(event: any) {
+    const userId: string = event.uid;
+    const data: EditedUser = event.data;
     console.log('data [profile change data]', data);
     console.log('event [profile change event]', event);
-    console.log('options [profile change options]', options);
-    this.userEdited = Observable.of(this.editedUserParts);
-    return this.editUserProfileData(userId, this.editedUserParts)
+
+    this.userEdited = Observable.of(data);
+    return this.editUserProfileData(userId, data)
       .then(res => console.log(`new user profile data`, res));
   }
 

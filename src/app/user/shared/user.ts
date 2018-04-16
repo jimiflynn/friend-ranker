@@ -1,7 +1,6 @@
 export class UserProfile implements User {
-
   constructor(
-    public uid: User['uid'],
+    public uid?: User['uid'],
     public email?: User['email'],
     public photoURL?: User['photoURL'],
     public username?: User['username'],
@@ -11,13 +10,16 @@ export class UserProfile implements User {
   }
 }
 
-export interface User {
-  uid: string;
+export class User {
+  uid?: string;
   token?: string;
   email?: string;
   photoURL?: string;
   username?: string;
   displayName?: string;
   profile?: any;
-  friends?: any;
+  friends?: any[];
+}
+
+export class EditedUser extends UserProfile {
 }

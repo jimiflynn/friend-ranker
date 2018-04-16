@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/combineLatest';
-import { UserProfile } from './user';
+import { UserProfile, EditedUser } from './user';
 
 @Injectable()
 export class UserService {
@@ -40,7 +40,7 @@ export class UserService {
       }).valueChanges()
   }
 
-  updateUserData(userId: string, userData: UserProfile | any): Promise<any> {
+  updateUserData(userId: string, userData: UserProfile | EditedUser | any): Promise<any> {
     // Sets user data to firestore on login
     console.log('User data', userData);
     return this.afs.doc<UserProfile>(`users/${userId}`).update(userData);

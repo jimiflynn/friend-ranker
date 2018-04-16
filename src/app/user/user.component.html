@@ -1,80 +1,101 @@
 <div *ngIf="auth.user$ | async as user" id="userPageWrapper" fxLayout="column" fxLayoutAlign="center center">
-c8afe48cfb9825fb9ad2a0b0d91cdb337340e85c
-    <mat-card class="user-profile-card">
-      <button (click)="viewUserData(user)"></button>
-      <mat-card-title class="user-profile-card-title">
-        <h3>Hi, {{ user.username }}</h3>
 
-      </mat-card-title>
-      <img [src]="user.photoURL" class="user-profile-card-image">
-      <mat-card-content  class="user-profile-card-content">
-        <p>{{ user.email }}</p>
-        <p>{{ user?.profile?.gender }}</p>
-        <p>{{ printedUserData | json }}</p>
-        <div id="userProfileCardEditContainer" *ngIf="showEditProfileContainer" fxLayout="column" fxLayoutAlign="center center">
-          <mat-card-title>Edit Profile Information</mat-card-title>
-              <form name="profileEditingForm">
+  <div class="user-profile-card" fxLayoutAlign="center center">
+    <button (click)="viewUserData(user)"></button>
+    <mat-card-title class="user-profile-card-title">
+      <h3>Hi, {{ user.username }}</h3>
 
-                <mat-form-field class="form-field-full-width">
-                  <input matInput #editedUsername name="username" maxlength="30" [(ngModel)]="editedUserParts.username" [placeholder]="user.username ? user.username : 'Create a Username'">
-                  <mat-hint align="end">{{editedUsername.value?.length || 0}}/30</mat-hint>
-                  <mat-error *ngIf="editedUsername.value.length < 1">{{getUsernameErrorMessage()}}</mat-error>
-                </mat-form-field>
+    </mat-card-title>
+    <img [src]="user.photoURL" class="user-profile-card-image">
+    <mat-card-content  class="user-profile-card-content">
+      <p [matTooltip]="user.email" matTooltipPosition="below"><i class="fa fa-envelope"></i></p>
+      <p>{{ user.profile?.gender }}</p>
+      <p>{{ printedUserData | json }}</p>
 
+      <app-user-edit
+      [userData]="user"
+      (submitNewUserProfileData)="submitNewUserProfileData($event)" (closeProfileEditContainer)="toggleEditProfileContainer()" *ngIf="showEditProfileContainer"></app-user-edit>
 
-                <mat-form-field class="form-field-full-width">
-                  <input matInput #editedEmail name="email" maxlength="20" [(ngModel)]="user.email" [placeholder]="editedUserParts.email">
-                  <mat-hint align="end">{{editedEmail.value?.length || 0}}/20</mat-hint>
-                </mat-form-field>
+    </mat-card-content>
+  </div>
+  <mat-divider class="pad-start-divider"></mat-divider>
 
+  <mat-card-actions class="user-profile-card-actions">
+    <button (click)="toggleEditProfileContainer()" mat-flat-button class="mat-flat-button" matTooltip="Edit your profile" matTooltipPosition="below">
+      <i class="fa fa-pencil-alt"></i>
+    </button>
+    <button mat-flat-button class="mat-flat-button" matTooltip="View your profile" matTooltipPosition="below">
+      <i class="fa fa-eye"></i>
+    </button>
+    <button mat-flat-button class="mat-flat-button" matTooltip="View your photos" matTooltipPosition="below">
+      <i class="fa fa-camera"></i>
+    </button>
+    <button mat-flat-button class="mat-flat-button" matTooltip="View your settings" matTooltipPosition="below">
+      <i class="fa fa-cog"></i>
+    </button>
+  </mat-card-actions>
 
-                <mat-form-field class="form-field-full-width">
-                  <input matInput #editedProfileImage name="photoURL" maxlength="30" [(ngModel)]="editedUserParts.photoURL" [placeholder]="'Edit Profile Image'">
-                  <mat-hint align="end">{{editedProfileImage.value?.length || 0}}/50</mat-hint>
-                </mat-form-field>
-              </form>
+  <mat-divider class="end-divider"></mat-divider>
 
+  <mat-card-title>title</mat-card-title>
+  <mat-grid-list cols="3" rowHeight="250" class="link-list-container">
+    <mat-grid-tile>
+      <mat-card  class="link-list-item">
+        <mat-card-content>
 
-          <mat-card-actions class="user-profile-edit-actions">
-            <button class="mat-raised-button" mat-raise-button (click)="submitNewUserProfileData(user.uid, $event, editedUserParts)">
-              <i class="fa fa-save"></i>
-            </button>
-            <button class="mat-raised-button" mat-raise-button>
-              <i class="fa fa-remove"></i>
-
-            </button>
-          </mat-card-actions>
-        </div>
+        <mat-icon><i class="fa fa-trophy"></i></mat-icon>
       </mat-card-content>
-      <mat-card-actions class="user-profile-card-actions">
-        <button (click)="toggleEditProfileContainer()" mat-icon-button class="mat-icon-button" matTooltip="Edit your profile" matTooltipPosition="below">
-          <mat-icon color="secondary"><i class="fa fa-pencil-alt"></i></mat-icon>
+        <!-- <img mat-card-image src="http://lorempixel.com/400/400" > -->
+        <mat-card-actions>
+
+          <button class="mat-icon-button" matTooltip="View your stories"
+          matTooltipPosition="above">View
         </button>
-        <button mat-icon-button class="mat-icon-button" matTooltip="View your profile as others see it" matTooltipPosition="below">
-          <mat-icon color="primary"><i class="fa fa-eye"></i></mat-icon>
-        </button>
+
       </mat-card-actions>
     </mat-card>
-    <mat-divider></mat-divider>
-    <mat-grid-list cols="3" rowHeight="200" class="user-quick-link-list-container">
-      <mat-grid-tile class="user-quick-link-list-item">
-        <button class="mat-icon-button" matTooltip="View the top rated stories"
-        matTooltipPosition="above">
-        <mat-icon><i class="fa fa-book"></i></mat-icon>
-      </button>
-    </mat-grid-tile>
-    <mat-grid-tile class="user-quick-link-list-item">
-      <button class="mat-icon-button" matTooltip="View a list of Friendranker Trophies"
-      matTooltipPosition="above">
-      <mat-icon><i class="fa fa-trophy"></i></mat-icon>
-    </button>
   </mat-grid-tile>
-  <mat-grid-tile class="user-quick-link-list-item">
-    <button class="mat-icon-button" matTooltip="View a list of your friends"
-    matTooltipPosition="above">
-    <mat-icon><i class="fa fa-users"></i></mat-icon>
-  </button>
+
+  <mat-grid-tile>
+    <mat-card  class="link-list-item">
+      <mat-card-content>
+
+      <mat-icon><i class="fa fa-trophy"></i></mat-icon>
+    </mat-card-content>
+
+      <!-- <img mat-card-image src="http://lorempixel.com/400/400"> -->
+      <mat-card-actions>
+
+
+        <button class="mat-icon-button" matTooltip="View a list of Friendranker Trophies"
+        matTooltipPosition="above">View
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </mat-grid-tile>
-    </mat-grid-list>
+
+<mat-grid-tile>
+  <mat-card  class="link-list-item">
+    <mat-card-content>
+
+    <mat-icon><i class="fa fa-trophy"></i></mat-icon>
+  </mat-card-content>
+
+    <!-- <img mat-card-image src="http://lorempixel.com/400/400"> -->
+    <mat-card-actions>
+
+
+      <button class="mat-icon-button" matTooltip="View a list of your friends"
+      matTooltipPosition="above">View
+    </button>
+  </mat-card-actions>
+</mat-card>
+
+</mat-grid-tile>
+</mat-grid-list>
+
+<mat-card>
+  <mat-card-title></mat-card-title>
+</mat-card>
 
 </div>

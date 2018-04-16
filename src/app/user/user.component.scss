@@ -1,7 +1,9 @@
 #userPageWrapper {
-
+  height: 100%;
   .user-profile-card {
+
     max-width: 50%;
+    margin: 0 auto 32px auto;
     text-align: center;
 
     .user-profile-card-image {
@@ -29,15 +31,44 @@
       }
     }
 
-    .user-profile-card-actions {
-      background-color: rgba(0,0,0,.111);
-      padding-bottom: 8px;
-
-      button[mat-icon-button] {
-        padding-bottom: 8px;
-        margin-left: 32px;
-        margin-right: 32px;
-      }
+  }
+  .user-profile-card-actions {
+    margin: 0;
+    padding-bottom: 8px;
+    button[mat-flat-button] {
+      min-width: 75px;
     }
+  }
+  .mat-divider.pad-start-divider {
+    margin-bottom: 8px;
+  }
+  .mat-divider.pad-end-divider {
+    padding-top: 8px;
+  }
+
+  .mat-divider.end-divider {
+    margin-bottom: 16px;
+  }
+
+  .link-list-container {
+    height: 100%;
+    padding-top: 16px;
+    min-height: 250px;
+    .mat-grid-tile {
+      background-color: rgba(0,0,0,.055);
+    .link-list-item {
+
+      min-height: 60%;
+      width: calc(100% - 16px);
+      .mat-card-content {
+        text-align: center;
+      }
+      .mat-card-actions {
+        bottom: 0;
+      }
+
+    }
+  }
+
   }
 }

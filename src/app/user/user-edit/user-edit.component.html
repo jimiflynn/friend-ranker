@@ -1,0 +1,39 @@
+<div id="userProfileCardEditContainer" fxLayout="column" fxLayoutAlign="center center">
+  <mat-card-title>Edit Profile Information</mat-card-title>
+  <form name="profileEditingForm">
+
+    <mat-form-field class="form-field-full-width">
+      <input matInput #editedUsername name="username" maxlength="30" [(ngModel)]="editedUserParts.username" [placeholder]="'username'">
+      <mat-hint align="end">{{editedUsername.value?.length || 0}}/30</mat-hint>
+      <mat-error *ngIf="editedUsername.value.length < 1">{{getUsernameErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="form-field-full-width">
+      <input matInput #editedEmail name="email" maxlength="20" [(ngModel)]="editedUserParts.email" [placeholder]="'email'">
+      <mat-hint align="end">{{editedEmail.value?.length || 0}}/20</mat-hint>
+    </mat-form-field>
+
+
+    <mat-form-field class="form-field-full-width">
+      <input matInput #editedProfileImage name="photoURL" maxlength="30" [(ngModel)]="editedUserParts.photoURL" [placeholder]="'profile image'">
+      <mat-hint align="end">{{editedProfileImage.value?.length || 0}}/50</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="form-field-full-width">
+      <input matInput #editedLocation name="province" maxlength="30" [(ngModel)]="editedUserParts.profile.location.name" [placeholder]="'location (city, state)'">
+      <mat-hint align="end">{{editedLocation.value?.length || 0}}/60</mat-hint>
+    </mat-form-field>
+  </form>
+
+
+  <mat-card-actions class="user-profile-edit-actions">
+    <button class="mat-raised-button" mat-raise-button (click)="addNewUserData(user.uid, editedUserParts)">
+      <i class="fa fa-save"></i>
+    </button>
+    <button class="mat-raised-button" mat-raise-button (click)="closeEditContainer()">
+      <i class="fa fa-times"></i>
+
+    </button>
+  </mat-card-actions>
+</div>

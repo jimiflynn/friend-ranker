@@ -54,32 +54,42 @@ export class AuthService {
   }
 
 
-  private updateUserData(u): Promise<any> | Observable<UserProfile> {
+  private updateUserData(u): Promise<any> | Observable<any> {
     // Sets user data to firestore on login
     const user = u.user;
     const userRef: AngularFirestoreDocument<UserProfile> = this.afs.doc(`users/${user.uid}`);
-    let data: UserProfile;
-      data = {
+    const isNew: boolean = u.additionalUserInfo.isNewUser;
+
+    if (isNew) {
+      const newUser: UserProfile = {
         uid: user.uid,
         email: user.email,
         photoURL: user.photoURL,
         username: (u.additionalUserInfo.profile.first_name || u.additionalUserInfo.profile.given_name),
         displayName: user.displayName,
         profile: u.additionalUserInfo.profile
+      }
 
+      console.log(`new user profile: `, newUser);
+      if (!newUser.profile.location) {
+        newUser.profile.location = {
+          id: <string>'',
+          name: <string>''
+        }
       }
-      console.log(`updating: `, data);
-      if(u.additionalUserInfo.isNewUser) {
-        return userRef.set(data, { merge: true });
-      } else {
-        return Promise.resolve();
-      }
+      return userRef.set(newUser, { merge: true });
+    } else {
+      console.log(`loading user profile: `, userRef.valueChanges());
+      return Promise.resolve(userRef.valueChanges());
+    }
   }
 
 
   signOut() {
     this.afAuth.auth.signOut().then(() => {
       this.router.navigate(['../../login']);
+      console.log(`logged out`);
+
     });
   }
 

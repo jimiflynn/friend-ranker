@@ -10,6 +10,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from './auth/auth.guard';
 import { throwIfAlreadyLoaded } from './module-import-guard';
+import { PreventAccessGuard } from './auth/prevent-access.guard';
 
 
 @NgModule({
@@ -21,7 +22,7 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
     AngularFirestoreModule
   ],
   declarations: [NavbarComponent],
-  providers: [AuthService, AuthGuard],
+  providers: [AuthService, AuthGuard, PreventAccessGuard],
   exports: [NavbarComponent]
 })
 export class CoreModule {

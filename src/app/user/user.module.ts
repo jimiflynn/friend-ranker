@@ -5,13 +5,14 @@ import { AuthGuard } from '../core/auth/auth.guard';
 import { AuthService } from '../core/auth/auth.service';
 import { UserComponent } from './user.component';
 import { UserService } from './shared/user.service';
+import { UserEditComponent } from './user-edit/user-edit.component';
 
 @NgModule({
   imports: [
     SharedModule,
     UserRoutingModule
   ],
-  declarations: [UserComponent],
+  declarations: [UserComponent, UserEditComponent],
   providers: [UserService],
   exports: [UserComponent]
 })
