@@ -1,0 +1,52 @@
+
+<mat-card-header>
+  <img mat-card-avatar [src]="avatarBuildURL" [ngStyle]="{'border-radius': avatarRounded ? '50%' : '0'}" alt="">
+  <mat-card-title>Create an Avatar</mat-card-title>
+
+</mat-card-header>
+<mat-dialog-content cdkScrollable>
+
+    <mat-divider></mat-divider>
+    <br>
+    <mat-card-subtitle>Single Click: font color</mat-card-subtitle>
+    <br>
+    <mat-card-subtitle>Double Click: background color</mat-card-subtitle>
+    <mat-grid-list [cols]="9" [rowHeight]="20">
+      <mat-grid-tile [colspan]="1" *ngFor="let color of colorOptions; let i = index;" [ngStyle]="{backgroundColor: '#' + color.hex}" matTooltip="{{ color.name }}" matTooltipPosition="below" (dblclick)="setBackground(color.hex)" (click)="setColor(color.hex)">
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-divider></mat-divider>
+    <br>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Advanced</mat-panel-title>
+      </mat-expansion-panel-header>
+      <span matLine>
+        Rounded
+      <mat-slide-toggle name="rounded" labelPosition="before" [checked]="avatarRounded" (change)="setRounded($event.checked)"></mat-slide-toggle>
+    </span>
+      <br>
+      <span matLine>
+      Font Size (%)
+      <mat-slider #size min=".40" max=".64" step=".05" [thumb-label]="true" (change)="setSize(size.displayValue)">Size</mat-slider>
+    </span>
+    <mat-grid-list [cols]="2" [rowHeight]="100" class="avatar-images-list">
+      <mat-grid-tile *ngFor="let img of providedAvatarImagesList" (click)="setAvatarImage(img)">
+        <img [src]="img" width="100" alt="">
+      </mat-grid-tile>
+    </mat-grid-list>
+    </mat-expansion-panel>
+
+
+  <mat-dialog-actions>
+    <button class="mat-raised-button" color="primary" (click)="[buildAvatar(), dialogRef.close(data.user)]" matTooltip="Save avatar" matTooltipPosition="below" >
+      <i class="fa fa-save"></i>
+    </button>
+    <button class="mat-raised-button" color="primary" (click)="dialogRef.close('canceled')" matTooltip="Cancel" matTooltipPosition="below" >
+      <i class="fa fa-times"></i>
+    </button>
+    <button class="mat-raised-button" (click)="reset()" matTooltip="Reset to default" matTooltipPosition="below" >
+      <i class="fa fa-trash"></i>
+    </button>
+  </mat-dialog-actions>
+</mat-dialog-content>
