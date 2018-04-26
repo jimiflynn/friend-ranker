@@ -1,101 +1,41 @@
-<div *ngIf="auth.user$ | async as user" id="userPageWrapper" fxLayout="column" fxLayoutAlign="center center">
+<div *ngIf="auth.user$ | async as user" (load)="loadUser(user)" id="userPageWrapper" fxLayout="column" fxLayoutAlign="center center">
 
   <div class="user-profile-card" fxLayoutAlign="center center">
-    <button (click)="viewUserData(user)"></button>
+    <!-- <button (click)="loadUser(user)"></button> -->
     <mat-card-title class="user-profile-card-title">
-      <h3>Hi, {{ user.username }}</h3>
+      <h3>Hi, {{ user.username | uppercase }}</h3>
 
     </mat-card-title>
-    <img [src]="user.photoURL" class="user-profile-card-image">
-    <mat-card-content  class="user-profile-card-content">
-      <p [matTooltip]="user.email" matTooltipPosition="below"><i class="fa fa-envelope"></i></p>
-      <p>{{ user.profile?.gender }}</p>
-      <p>{{ printedUserData | json }}</p>
+    <img mat-card-image
+    [src]="user.profile.useAvatar ? user.profile.avatarBuildURL : user.photoURL" [ngClass]="user.profile.useAvatar ? 'user-profile-card-avatar': 'user-profile-card-image'">
 
-      <app-user-edit
-      [userData]="user"
-      (submitNewUserProfileData)="submitNewUserProfileData($event)" (closeProfileEditContainer)="toggleEditProfileContainer()" *ngIf="showEditProfileContainer"></app-user-edit>
+    <mat-card-content  class="user-profile-card-content">
+      <p>{{ user.profile?.location.name }}</p>
 
     </mat-card-content>
   </div>
-  <mat-divider class="pad-start-divider"></mat-divider>
+  <mat-divider></mat-divider>
 
   <mat-card-actions class="user-profile-card-actions">
-    <button (click)="toggleEditProfileContainer()" mat-flat-button class="mat-flat-button" matTooltip="Edit your profile" matTooltipPosition="below">
-      <i class="fa fa-pencil-alt"></i>
-    </button>
-    <button mat-flat-button class="mat-flat-button" matTooltip="View your profile" matTooltipPosition="below">
-      <i class="fa fa-eye"></i>
-    </button>
-    <button mat-flat-button class="mat-flat-button" matTooltip="View your photos" matTooltipPosition="below">
-      <i class="fa fa-camera"></i>
-    </button>
-    <button mat-flat-button class="mat-flat-button" matTooltip="View your settings" matTooltipPosition="below">
-      <i class="fa fa-cog"></i>
-    </button>
+    <div class="user-profile-card-actions-inner" fxLayout="row wrap" fxLayoutAlign="center center">
+      <button (click)="toggleEditProfileContainer(user)" mat-flat-button class="mat-flat-button" matTooltip="Edit your profile" matTooltipPosition="below">
+        <i class="fa fa-pencil-alt"></i>
+      </button>
+      <button mat-flat-button class="mat-flat-button" matTooltip="View your Avatar" matTooltipPosition="below" (click)="toggleAvatarGenerator(user)">
+        <i class="fa fa-user"></i>
+      </button>
+      <button mat-flat-button class="mat-flat-button" matTooltip="View your photos" matTooltipPosition="below">
+        <i class="fa fa-camera"></i>
+      </button>
+      <button mat-flat-button class="mat-flat-button" matTooltip="View your settings" matTooltipPosition="below">
+        <i class="fa fa-cog"></i>
+      </button>
+    </div>
   </mat-card-actions>
 
   <mat-divider class="end-divider"></mat-divider>
 
-  <mat-card-title>title</mat-card-title>
-  <mat-grid-list cols="3" rowHeight="250" class="link-list-container">
-    <mat-grid-tile>
-      <mat-card  class="link-list-item">
-        <mat-card-content>
-
-        <mat-icon><i class="fa fa-trophy"></i></mat-icon>
-      </mat-card-content>
-        <!-- <img mat-card-image src="http://lorempixel.com/400/400" > -->
-        <mat-card-actions>
-
-          <button class="mat-icon-button" matTooltip="View your stories"
-          matTooltipPosition="above">View
-        </button>
-
-      </mat-card-actions>
-    </mat-card>
-  </mat-grid-tile>
-
-  <mat-grid-tile>
-    <mat-card  class="link-list-item">
-      <mat-card-content>
-
-      <mat-icon><i class="fa fa-trophy"></i></mat-icon>
-    </mat-card-content>
-
-      <!-- <img mat-card-image src="http://lorempixel.com/400/400"> -->
-      <mat-card-actions>
-
-
-        <button class="mat-icon-button" matTooltip="View a list of Friendranker Trophies"
-        matTooltipPosition="above">View
-      </button>
-    </mat-card-actions>
-  </mat-card>
-</mat-grid-tile>
-
-<mat-grid-tile>
-  <mat-card  class="link-list-item">
-    <mat-card-content>
-
-    <mat-icon><i class="fa fa-trophy"></i></mat-icon>
-  </mat-card-content>
-
-    <!-- <img mat-card-image src="http://lorempixel.com/400/400"> -->
-    <mat-card-actions>
-
-
-      <button class="mat-icon-button" matTooltip="View a list of your friends"
-      matTooltipPosition="above">View
-    </button>
-  </mat-card-actions>
-</mat-card>
-
-</mat-grid-tile>
-</mat-grid-list>
-
-<mat-card>
-  <mat-card-title></mat-card-title>
-</mat-card>
+  <mat-card-title>Stories</mat-card-title>
+  <router-outlet></router-outlet>
 
 </div>

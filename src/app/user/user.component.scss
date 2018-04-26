@@ -7,36 +7,33 @@
     text-align: center;
 
     .user-profile-card-image {
-      max-width: 25%;
-      max-height: 25%;
+      max-width: 40%;
+      max-height: 40%;
       border-radius: 50%;
+    }
+
+    .user-profile-card-avatar {
+      max-width: 40%;
+      max-height: 40%;
     }
 
     .user-profile-card-content {
       padding-top: 16px;
 
-      #userProfileCardEditContainer {
-        padding-top: 16px;
-        form[name=profileEditingForm] {
-          margin-left: 20%;
-          width: 60%;
-
-          .form-field-full-width {
-            margin-top: 8px;
-            width: 100%;
-          }
-
-        }
-
-      }
     }
 
+
   }
+
   .user-profile-card-actions {
-    margin: 0;
-    padding-bottom: 8px;
-    button[mat-flat-button] {
-      min-width: 75px;
+    margin: 0 auto;
+
+    .user-profile-card-actions-inner {
+      padding: 8px;
+      width: 100%;
+      button[mat-flat-button] {
+        margin: 4px;
+      }
     }
   }
   .mat-divider.pad-start-divider {
@@ -50,25 +47,4 @@
     margin-bottom: 16px;
   }
 
-  .link-list-container {
-    height: 100%;
-    padding-top: 16px;
-    min-height: 250px;
-    .mat-grid-tile {
-      background-color: rgba(0,0,0,.055);
-    .link-list-item {
-
-      min-height: 60%;
-      width: calc(100% - 16px);
-      .mat-card-content {
-        text-align: center;
-      }
-      .mat-card-actions {
-        bottom: 0;
-      }
-
-    }
-  }
-
-  }
 }

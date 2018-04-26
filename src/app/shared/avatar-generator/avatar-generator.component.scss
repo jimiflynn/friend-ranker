@@ -1,0 +1,36 @@
+.mat-card-header {
+  position: fixed;
+  width: calc(50% - 32px);
+  background-color: #ffffff;
+  top: 60px;
+  right: 25%;
+  padding: 0 16px;
+  z-index: 2000;
+
+  img[mat-card-avatar] {
+    width: 33%;
+    padding-left: 33%;
+  }
+}
+
+.mat-grid-list {
+  margin-bottom: 16px;
+
+  .avatar-images-list {
+    mat-grid-tile {
+      padding: 16px;
+    }
+    img {
+      width: auto;
+    }
+  }
+}
+
+.mat-divider {
+  margin-bottom: 8px;
+}
+
+.mat-dialog-content {
+  padding-top: 110px;
+  overflow-y: scroll;
+}

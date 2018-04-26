@@ -5,45 +5,57 @@ import {
   AngularFirestoreCollection
 } from 'angularfire2/firestore';
 import * as firebase from 'firebase';
+import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/combineLatest';
 import { UserProfile, EditedUser } from './user';
 
 @Injectable()
 export class UserService {
+  private fakeUrl = `https://randomuser.me/api/`;
   private usersCollection: AngularFirestoreCollection<UserProfile>;
   private userDataDocument: AngularFirestoreDocument<UserProfile>;
-
+  userStream$: Subject<UserProfile>;
   users$: Observable<UserProfile[]>;
   user$: Observable<UserProfile>;
 
-  constructor(public afs: AngularFirestore) {
+  constructor(
+    public afs: AngularFirestore,
+    private http: Http) {
     this.usersCollection = this.afs.collection<UserProfile>(`users`);
     this.users$ = this.usersCollection.valueChanges();
+    this.userStream$ = new BehaviorSubject<UserProfile>(null);
   }
 
+  getFakeUsers(limit: number): any {
+    const url: string = `${this.fakeUrl}?results=${limit}`;
+    return this.http.get(`${url}`);
+  }
 
-  loadUserDataById(userId: string): Observable<UserProfile> {
+  loadUserDataById(userId: string): void {
     this.userDataDocument = this.afs.doc<UserProfile>(`users/${userId}`);
     this.user$ = this.userDataDocument.valueChanges();
-    return this.user$;
-  }
-
-  queryUsernames(username: any): Observable<any | null> {
-    return this.afs.collection<UserProfile>('users', ref => {
-        let query : firebase.firestore.Query = ref;
-        if (username) { query = query.where('username', '==', username) };
-        console.log(`query username`, username);
-        return query;
-      }).valueChanges()
   }
 
   updateUserData(userId: string, userData: UserProfile | EditedUser | any): Promise<any> {
-    // Sets user data to firestore on login
-    console.log('User data', userData);
-    return this.afs.doc<UserProfile>(`users/${userId}`).update(userData);
+    this.loadUserDataById(userId);
+    // Sets user data to firestore
+    console.log('DB => Upload Completed at:', new Date().toString());
+    return this.userDataDocument.update(userData);
   }
+
+  // queryUsernames(username: any): Observable<any | null> {
+  //   return this.afs.collection<UserProfile>('users', ref => {
+  //       let query : firebase.firestore.Query = ref;
+  //       if (username) { query = query.where('username', '==', username) };
+  //       console.log(`query username`, username);
+  //       return query;
+  //     }).valueChanges()
+  // }
+
 
 }

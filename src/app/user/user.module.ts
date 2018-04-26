@@ -6,6 +6,8 @@ import { AuthService } from '../core/auth/auth.service';
 import { UserComponent } from './user.component';
 import { UserService } from './shared/user.service';
 import { UserEditComponent } from './user-edit/user-edit.component';
+import { AvatarGeneratorComponent } from '../shared/avatar-generator/avatar-generator.component';
+
 
 @NgModule({
   imports: [
@@ -14,6 +16,8 @@ import { UserEditComponent } from './user-edit/user-edit.component';
   ],
   declarations: [UserComponent, UserEditComponent],
   providers: [UserService],
-  exports: [UserComponent]
+  exports: [UserComponent],
+  entryComponents: [UserEditComponent, AvatarGeneratorComponent]
+
 })
 export class UserModule { }

@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UserProfile, EditedUser } from '../shared/user';
 import { Observable } from 'rxjs/Observable';
 import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 interface ReadyToEmit {
-  uid: string,
   data?: EditedUser
 }
 
@@ -14,19 +14,27 @@ interface ReadyToEmit {
   styleUrls: ['./user-edit.component.scss']
 })
 export class UserEditComponent implements OnInit {
-  @Input('userData') set _data(data) {
-    if(data) {
-      console.log(`edited component user input`, data)
-      this.user = data;
-    }
-  }
-  private _user: Observable<UserProfile | EditedUser>;
-  @Output() submitNewUserProfileData = new EventEmitter<ReadyToEmit>();
-  @Output() closeProfileEditContainer = new EventEmitter<boolean>();
-  user: UserProfile;
-  location: any;
+  // @Input('userData') user: UserProfile;
+  //
+  // @Output() submitNewUserProfileData = new EventEmitter<EditedUser>();
+  // @Output() closeProfileEditContainer = new EventEmitter<boolean>();
+  // user: UserProfile | EditedUser;
   editedUserParts: EditedUser;
-  constructor() { }
+  useAvatar: true;
+  constructor(
+    public dialogRef: MatDialogRef<UserEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.editedUserParts = data.user;
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  saveAvatarURL(url?: string | any) {
+    this.editedUserParts.profile.useAvatar = true;
+    this.editedUserParts.profile.avatarURL = url;
+  }
 
   private validateUsername(input: string | any | null, event?: any, userId?: string) {
     this.editedUserParts.username = input;
@@ -44,20 +52,12 @@ export class UserEditComponent implements OnInit {
     this.editedUserParts.photoURL = input;
   }
 
-  addNewUserData(userId: string, data: EditedUser) {
-    const keys: string[] = Object.keys(data);
-    let passedDataObject: ReadyToEmit = {
-      uid: userId,
-      data: <EditedUser>this.editedUserParts
-    }
-    for (let i in keys) {
-      this.editedUserParts[keys[i]] = data[keys[i]];
-    }
-    this.submitNewUserProfileData.emit(passedDataObject);
+  addNewUserData(data: EditedUser) {
+    this.dialogRef.close(data);
   }
 
   closeEditContainer() {
-    this.closeProfileEditContainer.emit()
+    this.dialogRef.close();
   }
 
   getUsernameErrorMessage(): string {
@@ -65,7 +65,6 @@ export class UserEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.editedUserParts = this.user;
   }
 
 }

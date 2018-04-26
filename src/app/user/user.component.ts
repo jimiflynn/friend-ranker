@@ -1,6 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatGridList } from '@angular/material/grid-list';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -14,57 +17,102 @@ import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs
 import { AuthService, User } from '../core/auth/auth.service';
 import { UserService } from './shared/user.service';
 import { UserProfile, EditedUser } from './shared/user';
+import { UserEditComponent } from './user-edit/user-edit.component';
+import { AvatarGeneratorComponent } from '../shared/avatar-generator/avatar-generator.component';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatGridList) matGridList: MatGridList;
   showEditProfileContainer: boolean = false;
-  printedUserData: any;
-  userEdited: Observable<UserProfile>;
-  usernameFilter$: BehaviorSubject<string | null>;
-  userEmailFilter$: BehaviorSubject<string | null>;
-  userPhotoFilter$: BehaviorSubject<string | null>;
+  showAvatarGenerator: boolean = false;
+  printedUsername: any;
+  userEdited: Subject<UserProfile>;
+
 
   constructor(
-    public userData: UserService,
-    public auth: AuthService
+    public userService: UserService,
+    public auth: AuthService,
+    public dialog: MatDialog
   ) {
+    this.userEdited = new BehaviorSubject<UserProfile | EditedUser>(null)
+  }
+
+  toggleAvatarGenerator(data?: any) {
+    let dialogRef = this.dialog.open(AvatarGeneratorComponent, {
+      autoFocus: true,
+      hasBackdrop: true,
+      width: '50%',
+      minWidth: '50%',
+      height: 'auto',
+      position: {right: '25%'},
+      data: { user: data }
+    })
+    console.log(`avatar event`, dialogRef);
+    dialogRef.beforeClose().subscribe(result => {
+      if(result && result !== 'canceled') {
+        console.log('SAVING...', result);
+        this.updateUserProfile(result.uid, result)
+      } else {
+        console.log('CLOSING...');
+      }
+    });
   }
 
 
-  toggleEditProfileContainer(): void {
-    this.showEditProfileContainer = !this.showEditProfileContainer;
+  toggleEditProfileContainer(data: any): void {
+    let dialogRef = this.dialog.open(UserEditComponent, {
+      autoFocus: true,
+      width: '50%',
+      minWidth: '50%',
+      minHeight: '100%',
+      position: {top: '60px', right: '25%', bottom: '0'},
+      data: { user: data }
+    });
+    dialogRef.beforeClose().subscribe(result => {
+      if(result) {
+        console.log('SAVING...', result);
+        this.updateUserProfile(result.uid, result)
+      } else {
+        console.log('CLOSING...');
+
+      }
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('COMPLETE!');
+    });
+    // this.showEditProfileContainer = !this.showEditProfileContainer;
   }
 
-  private editUserProfileData(userId: string, data: EditedUser) {
-    return this.userData.updateUserData(userId, data);
-  }
-
-  submitNewUserProfileData(event: any) {
-    const userId: string = event.uid;
-    const data: EditedUser = event.data;
-    console.log('data [profile change data]', data);
-    console.log('event [profile change event]', event);
-
-    this.userEdited = Observable.of(data);
-    return this.editUserProfileData(userId, data)
-      .then(res => console.log(`new user profile data`, res));
+  updateUserProfile(id: string, data: any): void {
+    this.userEdited.next(data);
+    this.userService.updateUserData(id, data);
   }
 
 
-  viewUserData(user: any): void {
-    this.userData.loadUserDataById(user.uid)
-      .subscribe(res => {
-        this.printedUserData = res;
-        console.log(`current user data: `, this.printedUserData);
+  loadUser(user: any): void {
+    this.userService.loadUserDataById(user.uid)
+      this.userService.user$.subscribe(res => {
+        console.log(`CURRENT USER: loaded => ${res.username}`);
       });
   }
 
-  ngOnInit() {
+  setAvatarImage(img: any) {
+    const enabledAvatar = this.userService.user$.map(user => {
+      if(user.profile.useAvatar) { return user.profile.avatarBuildURL };
+    });
+    console.log(`avatar`, img);
+  }
 
+  ngOnInit() {
+  }
+
+  ngAfterViewInit() {
   }
 
 }

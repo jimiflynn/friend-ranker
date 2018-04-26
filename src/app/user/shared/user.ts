@@ -6,6 +6,8 @@ export class UserProfile implements User {
     public username?: User['username'],
     public displayName?: User['displayName'],
     public profile?: User['profile'],
+    public stories?: User['stories'],
+    public photos?: User['photos'],
     public friends?: User['friends']) {
   }
 }
@@ -18,6 +20,8 @@ export class User {
   username?: string;
   displayName?: string;
   profile?: any;
+  stories?: any[];
+  photos?: any[];
   friends?: any[];
 }
 

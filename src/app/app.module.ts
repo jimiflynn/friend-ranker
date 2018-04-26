@@ -8,6 +8,8 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { environment } from '../environments/environment';
 
+import {ScrollDispatchModule} from '@angular/cdk/scrolling';
+
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 
@@ -27,6 +29,7 @@ import { StoriesModule } from './stories/stories.module';
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     FlexLayoutModule,
+    ScrollDispatchModule,
     CoreModule,
     SharedModule,
     UserModule,

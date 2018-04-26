@@ -1,7 +1,7 @@
 <div id="appRootWrapper">
   <app-navbar #navbar (toggleLeft)="onToggle(iconNavDrawer)" (toggleRight)="onToggle(featureDrawer)" [showSideNav]="iconNavDrawer.opened"></app-navbar>
 
-  <mat-sidenav-container>
+  <mat-sidenav-container autosize="true">
     <mat-sidenav
     [mode]="'push'"
     #iconNavDrawer
@@ -9,7 +9,7 @@
     id="fixedIconNav"
     fixedTopGap="60"
     fixedInViewport="true"
-    color="accent" closed>
+    color="accent" role="navigation" closed>
     <mat-list >
       <mat-list-item *ngFor="let link of links" title="{{ link.name }}">
         <a [routerLink]="link.routerLink">
@@ -26,7 +26,7 @@
       </mat-list-item>
     </mat-list>
     </mat-sidenav>
-    <mat-sidenav-content>
+    <mat-sidenav-content cdkScrollable>
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>

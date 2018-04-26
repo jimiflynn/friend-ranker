@@ -1,3 +1,10 @@
-<p>
-  stories works!
-</p>
+<mat-list>
+  <mat-list-item *ngFor="let story of mockStories" (click)="onStorySelect(story.id)" style="border: 1px solid rgba(0,0,0,.333);">
+    <img mat-list-avatar [src]="story.postedBy.photoURL ? story.postedBy.photoURL : '../../assets/images/avatar.png'" alt="">
+    <span matLine>
+      {{ story.content.title }}
+    </span>
+    <p>{{ story.postedBy.username }} posted a Story</p>
+
+  </mat-list-item>
+</mat-list>

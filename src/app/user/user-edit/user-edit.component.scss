@@ -1,0 +1,14 @@
+::ng-deep .cdk-overlay-container .cdk-global-overlay-wrapper {
+  max-width: 100%;
+  justify-content: center;
+}
+:host {
+
+  width: 100%;
+  margin: 0 auto;
+  #userProfileCardEditContainer {
+    .mat-form-field {
+      display: block;
+    }
+  }
+}
