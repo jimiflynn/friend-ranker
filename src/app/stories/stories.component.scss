@@ -1,0 +1,15 @@
+.story-panel-description {
+  align-items: center;
+  padding-left: 60%;
+  flex-grow: 0;
+}
+.story-actions-wrapper {
+  button {
+    margin-left: 8px;
+    margin-right: 8px;
+    &:hover {
+      background-color: #673ab7;
+      color: #FFFFFF;
+    }
+  }
+}

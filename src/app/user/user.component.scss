@@ -1,24 +1,33 @@
 #userPageWrapper {
   height: 100%;
+  top: -10px;
+  margin-bottom: 60px;
   .user-profile-card {
-
-    max-width: 50%;
-    margin: 0 auto 32px auto;
-    text-align: center;
+    display: flex;
+    padding: 28px 16px;
+    align-items: center;
+    background-color: #673ab7;
 
     .user-profile-card-image {
-      max-width: 40%;
-      max-height: 40%;
+      max-width: 120px;
+      max-height: 120px;
       border-radius: 50%;
     }
 
     .user-profile-card-avatar {
-      max-width: 40%;
-      max-height: 40%;
+      max-width: 120px;
+      max-height: 120px;
     }
 
+    .user-profile-card-title {
+      padding-left: 20px;
+      font-weight: 300;
+      color: #FFFFFF;
+    }
+
+
     .user-profile-card-content {
-      padding-top: 16px;
+      bottom: 16px;
 
     }
 
@@ -45,6 +54,21 @@
 
   .mat-divider.end-divider {
     margin-bottom: 16px;
+  }
+
+  .mat-card.users-list {
+    padding: 0;
+    margin-bottom: 16px;
+    .mat-card-header {
+      padding-left: -24px;
+      padding-right: -24px;
+      background-color: lighten($color: #673ab7, $amount: 30);
+    }
+    .mat-card-content {
+      display: flex;
+      align-items: center;
+
+    }
   }
 
 }

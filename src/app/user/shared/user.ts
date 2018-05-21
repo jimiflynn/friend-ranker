@@ -1,3 +1,5 @@
+import { Notice } from '../../notifications/shared/notification';
+
 export class UserProfile implements User {
   constructor(
     public uid?: User['uid'],
@@ -8,7 +10,8 @@ export class UserProfile implements User {
     public profile?: User['profile'],
     public stories?: User['stories'],
     public photos?: User['photos'],
-    public friends?: User['friends']) {
+    public friends?: User['friends'],
+    public notifications?: User['notifications']) {
   }
 }
 
@@ -21,9 +24,20 @@ export class User {
   displayName?: string;
   profile?: any;
   stories?: any[];
-  photos?: any[];
-  friends?: any[];
+  photos?: Photo[];
+  friends?: Friend[];
+  notifications?: Notice[];
 }
 
 export class EditedUser extends UserProfile {
+}
+
+export interface Photo {
+  id: string | number;
+  postedBy: string;
+  url: string;
+  caption?: string;
+}
+
+export class Friend extends UserProfile {
 }

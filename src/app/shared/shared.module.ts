@@ -6,6 +6,7 @@ import { AvatarGeneratorComponent } from './avatar-generator/avatar-generator.co
 import { SafeHtmlPipe } from './safe-html/safe-html.pipe';
 
 
+
 @NgModule({
   imports: [
     CommonModule,

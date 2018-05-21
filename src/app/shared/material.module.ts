@@ -1,6 +1,9 @@
 import {NgModule} from '@angular/core';
 import {PlatformModule} from '@angular/cdk/platform';
 import {ObserversModule} from '@angular/cdk/observers';
+import {CdkTableModule} from '@angular/cdk/table';
+import {CdkStepperModule} from '@angular/cdk/stepper';
+import {LayoutModule} from '@angular/cdk/layout';
 
 import {
   MatAutocompleteModule,
@@ -90,7 +93,10 @@ import {
     MatToolbarModule,
     MatTooltipModule,
     ObserversModule,
-    PlatformModule
+    PlatformModule,
+    CdkTableModule,
+    CdkStepperModule,
+    LayoutModule
   ]
 })
 export class MaterialModule {}

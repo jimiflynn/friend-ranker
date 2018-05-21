@@ -1,41 +1,64 @@
 <div *ngIf="auth.user$ | async as user" (load)="loadUser(user)" id="userPageWrapper" fxLayout="column" fxLayoutAlign="center center">
-
+  <!-- <app-notifications [userId]="user.uid"></app-notifications> -->
+  <router-outlet name="notifications" [style.display]="showNotifications ? 'flex': 'none'"></router-outlet>
   <div class="user-profile-card" fxLayoutAlign="center center">
     <!-- <button (click)="loadUser(user)"></button> -->
-    <mat-card-title class="user-profile-card-title">
-      <h3>Hi, {{ user.username | uppercase }}</h3>
 
-    </mat-card-title>
-    <img mat-card-image
-    [src]="user.profile.useAvatar ? user.profile.avatarBuildURL : user.photoURL" [ngClass]="user.profile.useAvatar ? 'user-profile-card-avatar': 'user-profile-card-image'">
+      <img mat-card-avatar
+      [src]="user.profile.useAvatar ? user.profile.avatarBuildURL : user.photoURL" [ngClass]="user.profile.useAvatar ? 'user-profile-card-avatar': 'user-profile-card-image'">
+      <mat-card-title class="user-profile-card-title">
+        Hi, {{ user.username | uppercase }}
+      </mat-card-title>
 
-    <mat-card-content  class="user-profile-card-content">
-      <p>{{ user.profile?.location.name }}</p>
-
-    </mat-card-content>
   </div>
-  <mat-divider></mat-divider>
+
 
   <mat-card-actions class="user-profile-card-actions">
     <div class="user-profile-card-actions-inner" fxLayout="row wrap" fxLayoutAlign="center center">
-      <button (click)="toggleEditProfileContainer(user)" mat-flat-button class="mat-flat-button" matTooltip="Edit your profile" matTooltipPosition="below">
+      <button mat-flat-button class="mat-flat-button" matTooltip="Edit your profile" matTooltipPosition="below" (click)="toggleEditProfileContainer(user)">
         <i class="fa fa-pencil-alt"></i>
-      </button>
-      <button mat-flat-button class="mat-flat-button" matTooltip="View your Avatar" matTooltipPosition="below" (click)="toggleAvatarGenerator(user)">
-        <i class="fa fa-user"></i>
       </button>
       <button mat-flat-button class="mat-flat-button" matTooltip="View your photos" matTooltipPosition="below">
         <i class="fa fa-camera"></i>
       </button>
-      <button mat-flat-button class="mat-flat-button" matTooltip="View your settings" matTooltipPosition="below">
+      <button mat-flat-button class="mat-flat-button" matTooltip="Avatar settings" matTooltipPosition="below" (click)="toggleAvatarGenerator(user)">
+        <i class="fa fa-user"></i>
+      </button>
+      <button mat-flat-button class="mat-flat-button" matTooltip="Account settings" matTooltipPosition="below">
         <i class="fa fa-cog"></i>
       </button>
     </div>
   </mat-card-actions>
 
-  <mat-divider class="end-divider"></mat-divider>
 
-  <mat-card-title>Stories</mat-card-title>
+  <mat-card class="users-list">
+    <mat-card-header color="primary">
+      <h3>Users</h3>
+
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngFor="let member of allUsers | async">
+          <img mat-list-icon [src]="member.photoURL ? member.photoURL : member.profile.avatarBuildURL" alt="">
+          <p>
+            {{ member.username || member.displayName }}
+          </p>
+          <p>
+            <button class="mat-icon-button" mat-icon-button (click)="sendFriendRequest(user, member)" [disabled]="user.friends[member] ? true : false">
+              <i class="fa fa-user-plus"></i>
+            </button>
+          </p>
+
+        </mat-list-item>
+      </mat-list>
+  </mat-card-content>
+</mat-card>
+
+
+  <mat-divider class="end-divider"></mat-divider>
   <router-outlet></router-outlet>
+
+  <!-- <mat-divider></mat-divider> -->
+  <!-- <router-outlet name="photos"></router-outlet> -->
 
 </div>

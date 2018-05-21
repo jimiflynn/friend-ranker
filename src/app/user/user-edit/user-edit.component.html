@@ -2,12 +2,12 @@
   <mat-card-title mat-dialog-title>Edit Profile Information</mat-card-title>
   <mat-dialog-content cdkScrollable>
 
-  <form #editing="ngForm" (keyup.enter)="addNewUserData(editedUserParts)">
-
-    <mat-form-field class="form-field-full-width" fxFill>
-      <input matInput #editedUsername name="username" maxlength="30" [(ngModel)]="editedUserParts.username" [placeholder]="'username'">
+  <form #editing="ngForm">
+    <mat-form-field class="form-field-full-width" (keyup)="onUsernameInput(editedUsername.value, editing)" fxFill>
+      <input matInput #editedUsername name="username" id="username" min="6" maxlength="30" [placeholder]="'username'" [value]="this.editedUserParts.username">
+      <i class="fa fas" [ngClass]="usernameValidated ? 'fa-check':'fa-exclamation'" matSuffix></i>
       <mat-hint align="end">{{editedUsername.value?.length || 0}}/30</mat-hint>
-      <mat-error *ngIf="editedUsername.value.length < 1">{{getUsernameErrorMessage()}}</mat-error>
+      <mat-error *ngIf="usernameValidated === false">Username NOT available</mat-error>
     </mat-form-field>
 
 
@@ -18,16 +18,16 @@
 
 
     <mat-form-field class="form-field-full-width" fxFill>
-      <input matInput #editedProfileImage name="photoURL" maxlength="30" [(ngModel)]="editedUserParts.photoURL" [placeholder]="'profile image'">
+      <input matInput #editedProfileImage name="photoURL" maxlength="30" [(ngModel)]="editedUserParts.photoURL" [placeholder]="'photo URL'">
       <mat-hint align="end">{{editedProfileImage.value?.length || 0}}/50</mat-hint>
     </mat-form-field>
 
     <mat-form-field class="form-field-full-width" fxFill>
-      <input matInput #editedLocation name="province" maxlength="30" [(ngModel)]="editedUserParts.profile.location.name" [placeholder]="'location (city, state)'">
+      <input matInput #editedLocation name="location" maxlength="30" [(ngModel)]="editedUserParts.profile.location.name" [placeholder]="'location (city, state)'">
       <mat-hint align="end">{{editedLocation.value?.length || 0}}/60</mat-hint>
     </mat-form-field>
 
-    <mat-slide-toggle #editAvatar name="enabledAvatar" [(ngModel)]="editedUserParts.profile.useAvatar">
+    <mat-slide-toggle #editAvatar name="useAvatar" [(ngModel)]="editedUserParts.profile.useAvatar">
       Enable Avatar
     </mat-slide-toggle>
   </form>
@@ -35,7 +35,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions class="user-profile-edit-actions">
-    <button class="mat-raised-button" mat-raise-button (click)="addNewUserData(editedUserParts)">
+    <button type="button" class="mat-raised-button" mat-raise-button (click)="addNewUserData(editedUserParts)">
       <i class="fa fa-save"></i>
     </button>
     <button class="mat-raised-button" mat-raise-button (click)="closeEditContainer()">

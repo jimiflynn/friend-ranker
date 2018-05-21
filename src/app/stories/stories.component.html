@@ -1,10 +1,27 @@
-<mat-list>
-  <mat-list-item *ngFor="let story of mockStories" (click)="onStorySelect(story.id)" style="border: 1px solid rgba(0,0,0,.333);">
-    <img mat-list-avatar [src]="story.postedBy.photoURL ? story.postedBy.photoURL : '../../assets/images/avatar.png'" alt="">
-    <span matLine>
+<mat-card-title>Stories</mat-card-title>
+<mat-accordion *ngIf="auth.user$ | async as user" #list>
+  <mat-expansion-panel *ngFor="let story of user.stories">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <img mat-list-avatar width="25" [src]="story.postedBy.photoURL ? story.postedBy.photoURL : '../../assets/images/avatar.png'" alt="">
+      </mat-panel-title>
+      <mat-panel-description class="story-panel-description">
+        from {{ story.postedBy.username }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-card-title>
       {{ story.content.title }}
-    </span>
-    <p>{{ story.postedBy.username }} posted a Story</p>
 
-  </mat-list-item>
-</mat-list>
+    </mat-card-title>
+    <p>
+      {{ story.content.text }}
+
+    </p>
+
+    <mat-action-row class="story-actions-wrapper">
+      <button class="mat-raised-button" mat-raised-button (click)="markAsRead(story, list)"><i class="fa fa-check"></i></button>
+      <button class="mat-raised-button" mat-raised-button (click)="replyToStory(story, list)"><i class="fa fa-reply"></i></button>
+      <button class="mat-raised-button" mat-raised-button (click)="deleteStory(story, list)"><i class="fa fa-trash"></i></button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>

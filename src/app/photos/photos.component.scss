@@ -1,0 +1,10 @@
+::ng-deep mat-grid-list#photoGridList.mat-grid-list {
+  mat-grid-tile.mat-grid-tile figure.mat-figure {
+    mat-grid-tile-footer.mat-grid-tile-footer {
+      display: flex;
+      align-items: center;
+      bottom: 16px;
+      max-width: calc(100% - 16px);
+    }
+  }
+}

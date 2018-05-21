@@ -14,10 +14,16 @@ export const MainMenuDirectory: Link[] = [
     'icon': 'fa-user'
   },
   {
-    'name': 'Trophies',
-    'routerLink': '/trophies',
+    'name': 'Stories',
+    'routerLink': '/stories',
     'routerActive': 'active',
-    'icon': 'fa-trophy'
+    'icon': 'fa-book'
+  },
+  {
+    'name': 'Photos',
+    'routerLink': '/photos',
+    'routerActive': 'active',
+    'icon': 'fa-camera'
   },
   {
     'name': 'Notifications',

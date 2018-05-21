@@ -26,36 +26,38 @@ export class UserService {
   constructor(
     public afs: AngularFirestore,
     private http: Http) {
-    this.usersCollection = this.afs.collection<UserProfile>(`users`);
-    this.users$ = this.usersCollection.valueChanges();
-    this.userStream$ = new BehaviorSubject<UserProfile>(null);
+      this.usersCollection = this.afs.collection<UserProfile>(`users`);
+      this.users$ = this.usersCollection.valueChanges();
+      this.userStream$ = new BehaviorSubject<UserProfile>(null);
   }
 
-  getFakeUsers(limit: number): any {
+  getFakeUsers = (limit: number): Observable<any> => {
     const url: string = `${this.fakeUrl}?results=${limit}`;
     return this.http.get(`${url}`);
   }
 
-  loadUserDataById(userId: string): void {
+  loadUserDataById = (userId: string): void => {
     this.userDataDocument = this.afs.doc<UserProfile>(`users/${userId}`);
     this.user$ = this.userDataDocument.valueChanges();
   }
 
-  updateUserData(userId: string, userData: UserProfile | EditedUser | any): Promise<any> {
+  updateUserData = (userId: string, userData: UserProfile | EditedUser | any): Promise<any> => {
     this.loadUserDataById(userId);
     // Sets user data to firestore
     console.log('DB => Upload Completed at:', new Date().toString());
     return this.userDataDocument.update(userData);
   }
 
-  // queryUsernames(username: any): Observable<any | null> {
-  //   return this.afs.collection<UserProfile>('users', ref => {
-  //       let query : firebase.firestore.Query = ref;
-  //       if (username) { query = query.where('username', '==', username) };
-  //       console.log(`query username`, username);
-  //       return query;
-  //     }).valueChanges()
-  // }
+  queryUsernames = (username: any, userId?: string): Observable<UserProfile[] | null> => {
+    return this.afs.collection<UserProfile>('users', ref => {
+      let query: firebase.firestore.Query = ref;
+      query = query.where('username', '==', username);
+      return query;
+    }).valueChanges();
+
+  }
+
+
 
 
 }

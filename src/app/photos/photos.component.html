@@ -1,0 +1,26 @@
+<div class="photos-wrapper">
+
+<mat-card-title>Photos</mat-card-title>
+
+<mat-grid-list id="photoGridList" cols="3" rowHeight="260px" gutterSize="8" #list>
+  <mat-grid-tile *ngFor="let photo of photos">
+    <img [src]="photo.url" alt="">
+    <mat-grid-tile-footer>
+
+
+      <button class="mat-icon-button" mat-icon-button (click)="selectPhoto(photo, list)">
+        <i class="fa fa-comment"></i>
+      </button>
+      <button class="mat-icon-button" mat-icon-button (click)="selectPhoto(photo, list)">
+        <i class="fa fa-heart"></i>
+      </button>
+      <button class="mat-icon-button" mat-icon-button (click)="selectPhoto(photo, list)">
+        <i class="fa fa-share"></i>
+      </button>
+    
+
+    </mat-grid-tile-footer>
+  </mat-grid-tile>
+
+</mat-grid-list>
+</div>

@@ -2,12 +2,13 @@
 
     <mat-card-title>
       Account Setup and Login
+      {{accessorTest}}
     </mat-card-title>
 
   <mat-card>
     <img mat-card-image [src]="'../../assets/images/avatar.png'" alt="">
     <mat-card-title fxLayout="row">
-      Connect to your account using
+      Connect your account to
     </mat-card-title>
     <mat-divider>OR</mat-divider>
     <div class="button-wrapper-hr" fxLayoutAlign="center center">
@@ -21,4 +22,21 @@
     </button>
   </div>
 </mat-card>
+
+<div class="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+<mat-card-title>Or use Email and password</mat-card-title>
+<form #emailLoginForm="ngForm" fxFill>
+  <mat-form-field class="form-control">
+    <input matInput #email type="text" name="email" placeholder="email" required>
+  </mat-form-field>
+  <mat-form-field class="form-control">
+    <input matInput #password [pattern]="_passwordRegExp" type="password" name="password" placeholder="password" required>
+  </mat-form-field>
+  <mat-card-actions fxLayoutAlign="center center">
+    <button mat-raised-button class="mat-raised-button" (click)="createNewEmailAccount(email.value, password.value)">Sign up</button>
+    <button mat-raised-button class="mat-raised-button" (click)="emailLogin(email.value, password.value)">Login</button>
+  </mat-card-actions>
+</form>
+</div>
+
 </div>

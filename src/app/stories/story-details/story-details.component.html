@@ -1,2 +1,36 @@
-<mat-card-subtitle>{{ story.content.title }}</mat-card-subtitle>
-<mat-card-content>{{ story.content.text }}</mat-card-content>
+<mat-dialog-content>
+  <mat-card-subtitle>{{ story.timeStamp | date }} | <span (click)="toggleEdit()"><i class="fa fa-pencil-alt"></i>edit</span> <br />| {{ story.content.title }} |</mat-card-subtitle><br />
+  <div *ngIf="editStory">
+    <mat-form-field>
+      <textarea matInput [placeholder]="data.storyData.content.text" [(ngModel)]="data.storyData.content.text" name="content" id="storyContent" cols="30" rows="10"></textarea>
+    </mat-form-field>
+  </div>
+  <div *ngIf="!editStory">
+    {{ story.content.text }}
+  </div>
+  <mat-divider></mat-divider>
+
+  <mat-menu #friendMenu="matMenu" [yPosition]="'below'" [overlapTrigger]="false">
+    <mat-selection-list (selectionChange)="tagFriend($event)">
+      <mat-list-option *ngFor="let friend of friends" [value]="friend"><img mat-list-icon matLine [src]="friend.picture.thumbnail" alt="">{{ friend.name.first }}</mat-list-option>
+    </mat-selection-list>
+  </mat-menu>
+
+  <button mat-icon-button [matMenuTriggerFor]="friendMenu">
+  <i class="fa fa-user-plus"></i>
+  </button>
+    <mat-chip-list #taggedChips>
+      <mat-chip *ngFor="let tagged of taggedFriends" [removable]="true" (remove)="removeTaggedFriend(friend, $event)" matLine>
+        <img [src]="tagged.picture.thumbnail" mat-card-avatar alt=""> | {{ tagged.name.first }} |
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button class="mat-raised-button" mat-raised-button (click)="dialogRef.close(data)">
+    <i class="fa fa-check"></i>
+  </button>
+  <button class="mat-raised-button" mat-raised-button (click)="dialogRef.close()">
+    <i class="fa fa-times"></i></button>
+</mat-dialog-actions>

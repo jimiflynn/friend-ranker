@@ -62,7 +62,11 @@ export class AvatarGeneratorComponent implements OnInit {
   avatarRounded: boolean = false;
   avatarBuildURL: any;
   colorOptions: any[] = CRAYOLA_COLORS;
-
+  backgroundColorPanelOpened: boolean = false;
+  fontColorPanelOpened: boolean = false;
+  currentStep: number;
+  stepStatusList: any = {};
+  avatarReadyToSubmit: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<AvatarParams>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -92,6 +96,20 @@ export class AvatarGeneratorComponent implements OnInit {
       return Observable.of(this.avatarModel);
     })
     this.setName(data.user.displayName);
+  }
+
+  setStep(step: number) {
+    this.avatarReadyToSubmit = (step === -1) ? true : false;
+
+    this.currentStep = step;
+  }
+
+  nextStep() {
+    this.currentStep++;
+  }
+
+  prevStep() {
+    this.currentStep--;
   }
 
   setName(name: string): void {
@@ -147,9 +165,10 @@ export class AvatarGeneratorComponent implements OnInit {
   reset() {
     this.avatarBackground$.next(null);
     this.avatarColor$.next(null);
-    this.avatarRounded$.next(null);
+    this.avatarRounded$.next(false);
     this.avatarSize$.next(null);
     this.avatarImage$.next(null);
+    this.setStep(0);
   };
 
 

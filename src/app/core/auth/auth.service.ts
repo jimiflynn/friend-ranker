@@ -31,7 +31,7 @@ export class AuthService {
         if (user) {
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges()
         } else {
-          return Observable.of(null)
+          return Observable.of(null);
         }
       })
   }
@@ -43,43 +43,133 @@ export class AuthService {
 
   facebookLogin() {
     const provider = new firebase.auth.FacebookAuthProvider();
-    return this.oAuthLogin(provider)
+    return this.oAuthLogin(provider);
   }
+
+  emailAndPasswordLogin(email: string, password: string) {
+    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
+    .then((credential) => {
+      return this.updateUserData(credential);
+    });
+  }
+
+  createNewEmailAccount(email: string, password: string) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+    .then((credential) => {
+      console.log(`new email account`, credential);
+      let emailNameIndex = credential.email.indexOf('@');
+      let displayName = credential.email.slice(0, emailNameIndex);
+      let newUserDefaults = {
+        additionalUserInfo: {
+          isNewUser: true,
+          profile: {
+            avatarBuildURL: '../../assets/images/avatar.png',
+            userAvatar: false
+          }
+        },
+        displayName: displayName,
+        email: credential.email,
+        photoURL: '../../assets/images/avatar.png',
+        uid: credential.uid
+      }
+      return this.updateUserData(newUserDefaults);
+    });
+  }
+
 
   private oAuthLogin(provider) {
-    return this.afAuth.auth.signInWithPopup(provider)
+      return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) => {
-        return this.updateUserData(credential)
-      })
+        return this.updateUserData(credential);
+      });
   }
-
 
   private updateUserData(u): Promise<any> | Observable<any> {
     // Sets user data to firestore on login
-    const user = u.user;
-    const userRef: AngularFirestoreDocument<UserProfile> = this.afs.doc(`users/${user.uid}`);
-    const isNew: boolean = u.additionalUserInfo.isNewUser;
+    const user = u.user ? u.user : u;
+    const userId = user.uid;
+    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${userId}`);
+    const isNew: boolean = u.additionalUserInfo ? u.additionalUserInfo.isNewUser : false;
+    const username = u.additionalUserInfo ? u.additionalUserInfo.profile.first_name ? u.additionalUserInfo.profile.first_name : u.additionalUserInfo.profile.given_name ? u.additionalUserInfo.profile.given_name : u.displayName : u.displayName;
 
     if (isNew) {
-      const newUser: UserProfile = {
-        uid: user.uid,
+      const newUser: User = {
+        uid: userId,
         email: user.email,
         photoURL: user.photoURL,
-        username: (u.additionalUserInfo.profile.first_name || u.additionalUserInfo.profile.given_name),
-        displayName: user.displayName,
-        profile: u.additionalUserInfo.profile
+        username: username,
+        displayName: user.displayName || username,
+        profile: u.additionalUserInfo.profile,
+        stories: [{
+          id: 0,
+          postedBy: {
+            userId: 'ADMIN',
+            username: 'FriendRanker',
+            photoURL: '../../../assets/images/friendRanker_logo_small.svg'
+          },
+          content: {
+            text: `Welcome,
+            ${username}. Looks like you don't have any stories!
+            Posting stories is how you earn Trophies!
+            So POST a freagin Story, already!`,
+            title: `You're very first Story (don't make it your last)`
+          },
+          timeStamp: new Date(),
+          edited: false,
+          tagged: [
+            {
+              picture: {
+                thumbnail: '../../../assets/images/friendRanker_logo_small.svg'
+              },
+              name: {
+                first: 'FR'
+              }
+            }
+          ]
+        }],
+        photos: [
+          {
+            id: 0,
+            postedBy: userId,
+            url: 'https://placeholder.com/',
+            caption: `Welcome to Friendranker`
+          }
+        ],
+        friends: [
+          {
+            username: 'Jimi',
+            photoURL: '../../../assets/images/avatar_lego_2.jpg'
+          }
+        ],
+        notifications: [
+          {
+            from: {
+              id: 'ADMIN',
+              username: 'Friendranker',
+              photoURL: '../../../assets/images/avatar_lego_2.jpg',
+            },
+            icon: 'fa fa-user',
+            pending: false,
+            opened: false,
+            subject: 'Welcome!',
+            timestamp: new Date(),
+            type: 'account',
+            text: 'Your Notifications alert you to New Friend Requests, Comments, Tagged Images, Stories and more',
+          }
+        ]
       }
-
-      console.log(`new user profile: `, newUser);
+      console.log(`creating new user profile: `, newUser);
       if (!newUser.profile.location) {
         newUser.profile.location = {
           id: <string>'',
           name: <string>''
         }
       }
+      newUser.profile.avatarBuildURL = '../../assets/images/avatar.png';
+      newUser.profile.userAvatar = false;
       return userRef.set(newUser, { merge: true });
     } else {
-      console.log(`loading user profile: `, userRef.valueChanges());
+      console.log(`loading user profile... `);
       return Promise.resolve(userRef.valueChanges());
     }
   }

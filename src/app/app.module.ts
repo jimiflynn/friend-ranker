@@ -17,6 +17,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { UserModule } from './user/user.module';
 import { StoriesModule } from './stories/stories.module';
+import { PhotosModule } from './photos/photos.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 
 @NgModule({
@@ -35,6 +37,8 @@ import { StoriesModule } from './stories/stories.module';
     UserModule,
     AppRoutingModule,
     StoriesModule,
+    PhotosModule,
+    NotificationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

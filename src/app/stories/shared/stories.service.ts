@@ -15,7 +15,7 @@ import { of } from 'rxjs/observable/of';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/combineLatest';
 
-import { Story, MOCK_STORIES } from './stories';
+import { Story } from './stories';
 
 @Injectable()
 export class StoriesService {
@@ -40,8 +40,8 @@ export class StoriesService {
     return this.storyDataDocument.valueChanges();
   }
 
-  getMockStories(): Story[] {
-      return MOCK_STORIES;
+  addUserStory(story: Story) {
+    this.userStoriesCollection.add(story);
   }
 
 

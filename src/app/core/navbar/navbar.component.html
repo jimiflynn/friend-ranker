@@ -34,9 +34,11 @@
 			[mat-menu-trigger-for]="authenticatedMenu" />
 			<mat-menu #authenticatedMenu="matMenu" yPosition="below" overlapTrigger="false">
 				<button mat-menu-item (click)="router.navigateByUrl('/user')">Profile</button>
+				<button mat-menu-item (click)="router.navigateByUrl('/stories')">Stories</button>
+				<button mat-menu-item (click)="router.navigateByUrl('/photos')">Photos</button>
 				<button mat-menu-item (click)="router.navigateByUrl('/friends')">Friends</button>
-				<button mat-menu-item (click)="router.navigateByUrl('/posts')">Posts</button>
-				<button mat-menu-item (click)="[logout()]">Sign Out</button>
+				<button mat-menu-item (click)="router.navigateByUrl('/settings')">Settings</button>
+				<button mat-menu-item (click)="logout()">Sign Out</button>
 			</mat-menu>
 		</div>
 		<!-- <div class="right-toggle" (click)="toggleFeatureDrawer()">

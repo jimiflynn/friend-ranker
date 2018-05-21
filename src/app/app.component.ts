@@ -10,23 +10,21 @@ import { MatSidenavContainer } from '@angular/material/sidenav';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
+  // @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
   title = 'Friendranker';
   links: Link[] = MainMenuDirectory;
 
   constructor(
     private router: Router
-  ) {
-
-  }
+  ) {}
 
   onToggle(drawer, via?: any) {
     console.log(`toggle drawer: `, via);
-    return drawer.toggle()
+    return drawer.toggle();
   };
 
   ngOnInit() {
-    console.log(this.sidenavContainer);
+    // console.log(this.sidenavContainer);
   }
 
 }
